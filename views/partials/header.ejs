@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : '診療支援AIポータル' %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- 共通サイドバー -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>診療支援システム</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="/" class="nav-item <%= activePage === 'text-pdf' ? 'active' : '' %>">
+          <span class="icon">📄</span> PDF退院サマリー要約
+        </a>
+        <a href="/ocr-summary" class="nav-item <%= activePage === 'ocr-pdf' ? 'active' : '' %>">
+          <span class="icon">🖼️</span> スキャン画像PDF要約
+        </a>
+        <!-- ★ チャット用メニューを追加 -->
+        <a href="/chat" class="nav-item <%= activePage === 'chat' ? 'active' : '' %>">
+          <span class="icon">💬</span> AIチャット
+        </a>
+        <a href="#" class="nav-item disabled">
+          <span class="icon">🔍</span> 症例検索 <small>(準備中)</small>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <p>環境: 院内オフライン (Ollama)</p>
+      </div>
+    </aside>
+
+    <!-- メインコンテンツ領域の開始 -->
+    <main class="main-content">

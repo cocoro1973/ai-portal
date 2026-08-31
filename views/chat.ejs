@@ -1,0 +1,29 @@
+<%- include('partials/header', { pageTitle: 'AIチャット - 診療支援AIポータル', activePage: 'chat' }) %>
+
+<header class="content-header">
+  <h1>AIアシスタント チャット</h1>
+  <p class="subtitle">診療業務の疑問点や文章作成の相談など、自由に対話できます</p>
+</header>
+
+<section class="card chat-card">
+  <!-- チャット履歴表示エリア -->
+  <div id="chat-box" class="chat-box">
+    <div class="message assistant">
+      <div class="message-bubble">
+        こんにちは！診療支援AIアシスタントです。<br>
+        医学情報の確認や文章校正、要約など、お気軽にご相談ください。
+      </div>
+    </div>
+  </div>
+
+  <!-- 入力フォーム -->
+  <form id="chat-form" class="chat-input-area">
+    <textarea id="user-input" rows="2" placeholder="メッセージを入力... (Shift+Enterで改行、Enterで送信)" required></textarea>
+    <button type="submit" id="send-btn" class="btn btn-primary">送信</button>
+  </form>
+</section>
+
+<!-- チャット専用JavaScriptを読み込み -->
+<script src="/js/chat.js"></script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,11 @@
+<!-- 共通フッター -->
+      <footer class="app-footer" style="margin-top: 40px; text-align: center; color: #94a3b8; font-size: 0.85rem;">
+        <p>&copy; 診療支援AIポータル - 院内スタンドアロン版</p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- 画面ごとに指定された API エンドポイントを main.js に渡す -->
+  <script src="/js/upload.js" data-endpoint="<%= typeof apiEndpoint !== 'undefined' ? apiEndpoint : '/api/summarize-pdf' %>"></script>
+</body>
+</html>

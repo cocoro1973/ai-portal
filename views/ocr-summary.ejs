@@ -1,0 +1,23 @@
+<%- include('partials/header', { pageTitle: 'テキストPDF要約 - 診療支援AIポータル', activePage: 'ocr-pdf' }) %>
+
+      <header class="content-header">
+        <h1>画像PDFサマリー生成ツール</h1>
+        <p class="subtitle">画像ファイル(PDF)をアップロードしてAI要約します</p>
+      </header>
+
+      <section class="card">
+        <div class="drop-zone" id="drop-zone">
+          <div class="drop-icon">📤</div>
+          <p id="drop-text">ここにPDFファイルをドラッグ＆ドロップ<br>またはクリックしてファイルを選択</p>
+          <input type="file" id="file-input" accept="application/pdf">
+        </div>
+
+        <div class="action-area">
+          <button id="upload-btn" class="btn btn-primary" disabled>要約を実行する</button>
+        </div>
+
+        <div id="status" class="status-message"></div>
+        <div id="result" class="result-box" style="display: none;"></div>
+      </section>
+
+      <%- include('partials/footer', { apiEndpoint: '/api/summarize-image-pdf' }) %>
