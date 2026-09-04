@@ -18,7 +18,7 @@ function chunkText(text, chunkSize = 4000) {
 /**
  * PDFバッファからテキストを抽出し、分割要約を経て最終サマリーを生成する
  */
-async function processPdfAndSummarize(buffer) {
+async function processPdfAndSummarize(buffer, onProgress = () => {}) {
   // 1. PDFからテキスト抽出
   const pdfData = await pdf(buffer);
   const extractedText = pdfData.text;
@@ -33,7 +33,13 @@ async function processPdfAndSummarize(buffer) {
 
   // 3. 各チャンクごとに個別にOllamaへ投げて部分要約（Mapフェーズ）
   for (let i = 0; i < chunks.length; i++) {
-    const response = await axios.post(
+
+    const percent = Math.floor(5 + ((i + 1) / chunks.length) * 75);
+    onProgress(percent, `パーツ ${i + 1} / ${chunks.length} をAI分析中...`);
+
+
+
+          const response = await axios.post(
       `${llmConfig.ollamaHost}/api/chat`,
       {
         model: llmConfig.model,
@@ -60,6 +66,9 @@ async function processPdfAndSummarize(buffer) {
   let finalSummary = intermediateSummaries[0];
 
   if (intermediateSummaries.length > 1) {
+
+          onProgress(85, '分割した要約を統合し、最終サマリーを作成中...');
+
     const combinedSummaryText = intermediateSummaries
       .map((sum, idx) => `【パート${idx + 1}の要約】\n${sum}`)
       .join('\n\n');
@@ -75,7 +84,8 @@ async function processPdfAndSummarize(buffer) {
           },
           {
             role: 'user',
-            content: `${llmConfig.userPromptTemplate}\n\n以下は各章の要約一覧です。これらを統合し、時系列や医療経過が分かる最終サマリーを作成してください：\n\n${combinedSummaryText}`
+            content: `${llmConfig.userPromptTemplate}\n\n以下は各章の要約一覧です。これらを統合し、時系列や医療経過が分か
+る最終サマリーを作成してください：\n\n${combinedSummaryText}`
           }
         ],
         options: { num_ctx: 16384 },
