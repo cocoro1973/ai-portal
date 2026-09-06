@@ -113,9 +113,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const lines = buffer.split('\n\n');
         buffer = lines.pop(); // 未完結の行をバッファに残す
 
+// 修正前:
+        // for (const line of lines) {
+        //   if (line.startsWith('data: ')) {
+        //     const data = JSON.parse(line.replace('data: ', ''));
+        //     ...
+        //   }
+        // }
+
+        // 修正後（安全なパース処理）:
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = JSON.parse(line.replace('data: ', ''));
+          const trimmedLine = line.trim();
+          if (!trimmedLine || !trimmedLine.startsWith('data:')) continue;
+
+          // 'data:' 以降の純粋なJSON文字列を取り出す
+          const jsonString = trimmedLine.replace(/^data:\s*/, '');
+
+          try {
+            const data = JSON.parse(jsonString);
 
             // 進捗状況の更新
             if (data.percent >= 0) {
@@ -135,6 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div style="white-space: pre-wrap;">${data.summary}</div>
               `;
             }
+          } catch (e) {
+            console.warn('JSONパーススキップ（不完全なデータ）:', jsonString, e);
           }
         }
       }
